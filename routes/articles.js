@@ -3,7 +3,6 @@ const router = express.Router();
 const pool = require('../db'); // connexion PostgreSQL
 const ADMIN_PASSWORD = 'admin123';
 
-// Middleware mot de passe
 function requirePassword(req, res, next) {
   if (req.method === 'GET' && !req.query.pwd) {
     return res.send('<form method="get"><input type="password" name="pwd" placeholder="Mot de passe" required><button type="submit">Accéder</button></form>');
@@ -19,8 +18,13 @@ function requirePassword(req, res, next) {
 
 // Liste des articles
 router.get('/', async (req, res) => {
-  const result = await pool.query('SELECT * FROM articles ORDER BY created_at DESC');
-  res.render('index', { articles: result.rows });
+  try {
+    const result = await pool.query('SELECT * FROM articles ORDER BY created_at DESC');
+    res.render('index', { articles: result.rows });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Erreur serveur');
+  }
 });
 
 // Formulaire d’ajout d’un nouvel article
@@ -30,35 +34,53 @@ router.get('/new', requirePassword, (req, res) => {
 
 // Traitement du formulaire d’ajout
 router.post('/new', requirePassword, async (req, res) => {
-  const { titre, contenu } = req.body;
-  const result = await pool.query(
-    'INSERT INTO articles (titre, contenu) VALUES ($1, $2) RETURNING id',
-    [titre, contenu]
-  );
-  res.redirect('/articles/' + result.rows[0].id);
+  try {
+    const { titre, contenu } = req.body;
+    const result = await pool.query(
+      'INSERT INTO articles (titre, contenu, created_at) VALUES ($1, $2, $3) RETURNING id',
+      [titre, contenu, new Date()]
+    );
+    res.redirect('/articles/' + result.rows[0].id);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Erreur serveur');
+  }
 });
 
 // Détail d’un article
 router.get('/:id', async (req, res) => {
-  const result = await pool.query('SELECT * FROM articles WHERE id = $1', [req.params.id]);
-  const article = result.rows[0];
-  if (!article) return res.status(404).send('Article non trouvé');
-  res.render('article', { article });
+  try {
+    const result = await pool.query('SELECT * FROM articles WHERE id = $1', [req.params.id]);
+    if (!result.rows[0]) return res.status(404).send('Article non trouvé');
+    res.render('article', { article: result.rows[0] });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Erreur serveur');
+  }
 });
 
 // Formulaire d’édition d’un article
 router.get('/:id/edit', requirePassword, async (req, res) => {
-  const result = await pool.query('SELECT * FROM articles WHERE id = $1', [req.params.id]);
-  const article = result.rows[0];
-  if (!article) return res.status(404).send('Article non trouvé');
-  res.render('edit', { article });
+  try {
+    const result = await pool.query('SELECT * FROM articles WHERE id = $1', [req.params.id]);
+    if (!result.rows[0]) return res.status(404).send('Article non trouvé');
+    res.render('edit', { article: result.rows[0] });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Erreur serveur');
+  }
 });
 
 // Traitement du formulaire d’édition
 router.post('/:id/edit', requirePassword, async (req, res) => {
-  const { titre, contenu } = req.body;
-  await pool.query('UPDATE articles SET titre=$1, contenu=$2 WHERE id=$3', [titre, contenu, req.params.id]);
-  res.redirect('/articles/' + req.params.id);
+  try {
+    const { titre, contenu } = req.body;
+    await pool.query('UPDATE articles SET titre=$1, contenu=$2 WHERE id=$3', [titre, contenu, req.params.id]);
+    res.redirect('/articles/' + req.params.id);
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Erreur serveur');
+  }
 });
 
 module.exports = router;
