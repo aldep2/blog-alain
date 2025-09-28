@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= article.titre %></title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="articles-list">
+    <h1><%= article.titre %></h1>
+  <div class="article-content"><%= article.contenu %></div>
+    <a href="/articles">Retour à la liste</a>
+    <a href="/articles/<%= article.id %>/edit" style="margin-left:1em;">Modifier</a>
+  </div>
+</body>
+</html>

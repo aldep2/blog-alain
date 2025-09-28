@@ -1,0 +1,50 @@
+.article-content {
+	line-height: 1.8;
+	font-size: 1.15em;
+	margin-bottom: 2em;
+	text-align: left;
+	white-space: pre-line;
+}
+.articles-list h1 {
+	margin-bottom: 1em;
+	font-size: 1.5em;
+	letter-spacing: 0.02em;
+}
+.articles-list p {
+	margin-bottom: 1em;
+}
+h1 {
+	margin-top: 0;
+}
+.articles-list {
+	background: rgba(255, 245, 230, 0.65); /* crème, plus transparent */
+	color: #222;
+	border-radius: 12px;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+	padding: 1.5em 2em;
+		max-width: 750px;
+	margin: 2em auto;
+}
+/* Présentation personnelle */
+.presentation {
+	background: rgba(255, 245, 230, 0.65); /* crème, plus transparent */
+	color: #222;
+	border-radius: 12px;
+	box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+	padding: 1.5em 2em;
+		max-width: 750px;
+	margin: 2em auto;
+	text-align: center;
+}
+body { font-family: Arial, sans-serif; background: #f9f9f9; margin: 2em; }
+h1 { color: #333; }
+ul { list-style: none; padding: 0; }
+li { margin-bottom: 0.5em; }
+a { color: #007bff; text-decoration: none; }
+a:hover { text-decoration: underline; }
+body {
+	font-family: Arial, sans-serif;
+	background: #f9f9f9 url('/img/photo29.jpg') no-repeat center center fixed;
+	background-size: cover;
+	margin: 2em;
+}

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= article.id ? 'Modifier' : 'Créer' %> un article</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <div class="articles-list">
+    <h1><%= article.id ? 'Modifier' : 'Créer' %> un article</h1>
+    <form method="post" action="<%= article.id ? '/articles/' + article.id + '/edit' : '/articles/new' %>">
+      <label for="titre">Titre :</label><br>
+      <input type="text" id="titre" name="titre" value="<%= article.titre %>" required style="width:100%;margin-bottom:1em;"><br>
+  <label for="contenu">Contenu :</label><br>
+  <textarea id="contenu" name="contenu" rows="8" required style="width:100%;margin-bottom:1em;"><%= article.contenu %></textarea><br>
+  <label for="pwd">Mot de passe admin :</label><br>
+  <input type="password" id="pwd" name="pwd" required style="width:100%;margin-bottom:1em;"><br>
+  <button type="submit">Valider</button>
+  <a href="/articles" style="margin-left:1em;">Annuler</a>
+    </form>
+  </div>
+</body>
+</html>

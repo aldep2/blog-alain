@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Livre d'or</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <nav class="main-nav">
+    <a href="/">Accueil</a> |
+    <a href="/contact">Contact</a> |
+    <a href="/livre-or">Livre d'or</a>
+  </nav>
+  <div class="articles-list">
+    <h1>Livre d'or</h1>
+    <form method="post" action="/livre-or">
+      <label for="auteur">Votre nom :</label><br>
+      <input type="text" id="auteur" name="auteur" required style="width:100%;margin-bottom:1em;"><br>
+      <label for="message">Votre message :</label><br>
+      <textarea id="message" name="message" rows="5" required style="width:100%;margin-bottom:1em;"></textarea><br>
+      <button type="submit">Signer le livre d'or</button>
+    </form>
+    <hr>
+    <h2>Messages précédents</h2>
+    <ul>
+      <% if (messages && messages.length) { %>
+        <% messages.forEach(msg => { %>
+          <li><strong><%= msg.auteur %></strong> : <%= msg.message %></li>
+        <% }) %>
+      <% } else { %>
+        <li>Aucun message pour l’instant.</li>
+      <% } %>
+    </ul>
+  </div>
+</body>
+</html>
