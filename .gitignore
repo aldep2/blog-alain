@@ -1,0 +1,23 @@
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# Logs
+logs
+*.log
+*.out
+*.err
+
+# Runtime data
+pids
+*.pid
+*.seed
+
+# Env files
+.env
+
+# OS specific
+.DS_Store
+Thumbs.db
