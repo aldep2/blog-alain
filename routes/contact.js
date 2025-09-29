@@ -2,37 +2,39 @@ const express = require('express');
 const router = express.Router();
 const sgMail = require('@sendgrid/mail');
 
-// Configure SendGrid avec ta clé API
+// Configure SendGrid avec la clé API depuis l'environnement
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
+// Affichage du formulaire de contact
 router.get('/', (req, res) => {
-  res.render('contact');
+  res.render('contact'); // contact.ejs doit exister
 });
 
+// Traitement du formulaire de contact
 router.post('/', async (req, res) => {
   const { name, email, message } = req.body;
 
+  // Vérification que tous les champs sont remplis
   if (!name || !email || !message) {
-    return res.status(400).send('Tous les champs sont requis.');
+    return res.status(400).render('contact', { error: 'Tous les champs sont requis !' });
   }
 
   const msg = {
-    to: process.env.CONTACT_EMAIL, // ton adresse de réception
-    from: process.env.CONTACT_EMAIL, // doit être validée dans SendGrid
+    to: process.env.FROM_EMAIL,       // tu reçois le message ici
+    from: process.env.FROM_EMAIL,     // ton expéditeur vérifié sur SendGrid
     subject: `Nouveau message de ${name}`,
-    text: `
-      De: ${name} (${email})
-      Message:
-      ${message}
-    `,
+    text: `Nom: ${name}\nEmail: ${email}\nMessage: ${message}`,
+    html: `<p><strong>Nom :</strong> ${name}</p>
+           <p><strong>Email :</strong> ${email}</p>
+           <p><strong>Message :</strong><br>${message}</p>`
   };
 
   try {
     await sgMail.send(msg);
-    res.send('Votre message a été envoyé avec succès ✅');
-  } catch (error) {
-    console.error(error);
-    res.status(500).send('Erreur lors de l’envoi du message ❌');
+    res.render('contact', { success: 'Merci pour votre message !' });
+  } catch (err) {
+    console.error('Erreur SendGrid:', err);
+    res.status(500).render('contact', { error: 'Erreur lors de l’envoi du message. Réessayez plus tard.' });
   }
 });
 
