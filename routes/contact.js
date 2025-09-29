@@ -1,43 +1,38 @@
 const express = require('express');
 const router = express.Router();
-const nodemailer = require('nodemailer');
+const sgMail = require('@sendgrid/mail');
 
-// Transporteur SMTP
-const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com', // adapte selon ton fournisseur d'email
-  port: 465,
-  secure: true,
-  auth: {
-    user: process.env.EMAIL_USER, // ton email
-    pass: process.env.EMAIL_PASS  // App Password ou mot de passe si pas de 2FA
-  }
-});
+// Configure SendGrid avec ta clé API
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-// Affichage du formulaire (GET)
 router.get('/', (req, res) => {
-  res.render('contact'); // rend contact.ejs
+  res.render('contact');
 });
 
-// Envoi du message (POST)
 router.post('/', async (req, res) => {
   const { name, email, message } = req.body;
 
   if (!name || !email || !message) {
-    return res.render('contact', { errorMessage: 'Tous les champs sont requis.' });
+    return res.status(400).send('Tous les champs sont requis.');
   }
 
-  try {
-    await transporter.sendMail({
-      from: `"${name}" <${email}>`,
-      to: process.env.EMAIL_USER,  // ton email de réception
-      subject: `Message depuis le blog de ${name}`,
-      text: message
-    });
+  const msg = {
+    to: process.env.CONTACT_EMAIL, // ton adresse de réception
+    from: process.env.CONTACT_EMAIL, // doit être validée dans SendGrid
+    subject: `Nouveau message de ${name}`,
+    text: `
+      De: ${name} (${email})
+      Message:
+      ${message}
+    `,
+  };
 
-    res.render('contact', { successMessage: 'Merci pour votre message !' });
-  } catch (err) {
-    console.error(err);
-    res.render('contact', { errorMessage: 'Erreur lors de l’envoi du mail.' });
+  try {
+    await sgMail.send(msg);
+    res.send('Votre message a été envoyé avec succès ✅');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Erreur lors de l’envoi du message ❌');
   }
 });
 
