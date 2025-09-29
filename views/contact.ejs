@@ -1,26 +1,38 @@
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 <head>
+  <meta charset="UTF-8">
   <title>Contact</title>
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-  <nav class="main-nav">
-    <a href="/">Accueil</a> |
-    <a href="/contact">Contact</a> |
-    <a href="/livre-or">Livre d'or</a>
-  </nav>
-  <div class="articles-list">
-    <h1>Contactez-moi</h1>
-    <form method="post" action="/contact">
-      <label for="nom">Nom :</label><br>
-      <input type="text" id="nom" name="nom" required style="width:100%;margin-bottom:1em;"><br>
-      <label for="email">Email :</label><br>
-      <input type="email" id="email" name="email" required style="width:100%;margin-bottom:1em;"><br>
-      <label for="message">Message :</label><br>
-      <textarea id="message" name="message" rows="6" required style="width:100%;margin-bottom:1em;"></textarea><br>
-      <button type="submit">Envoyer</button>
-    </form>
-  </div>
+  <h1>Contactez-moi</h1>
+
+  <form action="/contact" method="POST">
+    <div>
+      <label for="name">Nom :</label>
+      <input type="text" id="name" name="name" placeholder="Votre nom" required>
+    </div>
+
+    <div>
+      <label for="email">Email :</label>
+      <input type="email" id="email" name="email" placeholder="Votre email" required>
+    </div>
+
+    <div>
+      <label for="message">Message :</label>
+      <textarea id="message" name="message" placeholder="Votre message" required></textarea>
+    </div>
+
+    <button type="submit">Envoyer</button>
+  </form>
+
+  <% if (typeof successMessage !== 'undefined') { %>
+    <p style="color: green;"><%= successMessage %></p>
+  <% } %>
+
+  <% if (typeof errorMessage !== 'undefined') { %>
+    <p style="color: red;"><%= errorMessage %></p>
+  <% } %>
 </body>
 </html>

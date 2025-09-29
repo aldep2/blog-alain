@@ -5,6 +5,11 @@ const PORT = 3060;
 const fs = require('fs');
 const path = require('path');
 const livreOrPath = path.join(__dirname, 'livre-or.json');
+const contactRouter = require('./routes/contact');
+app.use('/contact', contactRouter);
+
+
+
 
 function readLivreOrMessages() {
   try {
