@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const pool = require('../db'); // connexion PostgreSQL
+const pool = require('./db'); // connexion PostgreSQL
 
 // Affichage du livre d'or
 router.get('/', async (req, res) => {

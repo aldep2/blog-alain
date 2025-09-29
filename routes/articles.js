@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const pool = require('../db'); // connexion PostgreSQL
+const pool = require('./db'); // connexion PostgreSQL
 const ADMIN_PASSWORD = 'admin123';
 
 function requirePassword(req, res, next) {
