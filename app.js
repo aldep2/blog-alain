@@ -7,6 +7,8 @@ const path = require('path');
 const articlesRouter = require('./routes/articles');
 const contactRouter = require('./routes/contact');
 const livreOrRouter = require('./routes/livre-or');
+const contactAdminRouter = require('./routes/contact-admin');
+app.use('/admin/contact', contactAdminRouter);
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
