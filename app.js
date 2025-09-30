@@ -6,7 +6,7 @@ const path = require('path');
 // Routes
 const articlesRouter = require('./routes/articles');
 const contactRouter = require('./routes/contact');
-const livreOrRouter = require('./routes/livre-or'); // version Postgres
+const livreOrRouter = require('./routes/livre-or');
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));

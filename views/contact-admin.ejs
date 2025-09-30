@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Messages du Contact - Admin</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <h1>Messages reçus</h1>
+  <table border="1" cellpadding="10">
+    <tr>
+      <th>Nom</th>
+      <th>Email</th>
+      <th>Message</th>
+      <th>Date</th>
+    </tr>
+    <% messages.forEach(msg => { %>
+    <tr>
+      <td><%= msg.name %></td>
+      <td><%= msg.email %></td>
+      <td><%= msg.message %></td>
+      <td><%= new Date(msg.created_at).toLocaleString() %></td>
+    </tr>
+    <% }) %>
+  </table>
+</body>
+</html>
